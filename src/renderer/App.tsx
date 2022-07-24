@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import ImageGallery from './ImageGallery';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline } from '@mui/material';
+import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+
 const queryClient = new QueryClient({
     defaultOptions: {
         queries: {
@@ -19,15 +21,21 @@ const darkTheme = createTheme({
     },
 });
 
-function App() {
+function Shiba() {
+    return <ImageGallery />;
+}
+
+export default function App() {
     return (
         <ThemeProvider theme={darkTheme}>
             <CssBaseline />
             <QueryClientProvider client={queryClient}>
-                <ImageGallery />
+                <Router>
+                    <Routes>
+                        <Route path="/" element={<Shiba />} />
+                    </Routes>
+                </Router>
             </QueryClientProvider>
         </ThemeProvider>
     );
 }
-
-export default App;

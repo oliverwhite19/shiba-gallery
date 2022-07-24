@@ -11,6 +11,7 @@ module.exports = {
         'import/order': 'off',
         'promise/catch-or-return': 'off',
         'promise/always-return': 'off',
+        '@typescript-eslint/no-non-null-assertion': 'off',
     },
     parserOptions: {
         ecmaVersion: 2020,

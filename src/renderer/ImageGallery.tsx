@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useKeyPressEvent } from 'react-use';
-import { Image } from './components';
+import { Image, SpeedDial } from './components';
 import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
@@ -82,6 +82,7 @@ function ImageGallery() {
     });
     return (
         <>
+            <SpeedDial onCopy={copyURL} />
             <Grid>
                 <div>
                     <FullHeightIconButton
