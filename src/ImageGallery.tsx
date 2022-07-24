@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Image } from './components';
-import { CircularProgress, IconButton } from '@mui/material';
+import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getShibas } from './api';
 
 import { styled } from '@mui/material/styles';
+import { useKeyPressEvent } from 'react-use';
 
 const FullHeightIconButton = styled(IconButton)({
     height: '100%',
@@ -32,6 +33,7 @@ const CenteredImage = styled('div')({
 function ImageGallery() {
     const [index, setIndex] = useState(0);
     const [page, setPage] = useState(0);
+    const [snackbar, setSnackbar] = useState(false);
 
     const { isLoading, data, fetchNextPage } = useInfiniteQuery(
         ['shibas'],
@@ -40,50 +42,91 @@ function ImageGallery() {
             getNextPageParam: () => page + 1,
         }
     );
+    const previousImage = () => {
+        if (index === 0) {
+            setPage(page - 1);
+            setIndex(9);
+        } else {
+            setIndex(index - 1);
+        }
+    };
+    const nextImage = () => {
+        if (index === data?.pages[page]?.length - 1) {
+            fetchNextPage().then(() => {
+                setIndex(0);
+                setPage(page + 1);
+            });
+        } else {
+            setIndex(index + 1);
+        }
+    };
+
+    const copyURL = () => {
+        /* Copy the text inside the text field */
+        navigator.clipboard.writeText(data?.pages[page]?.[index]);
+
+        /* Alert the copied text */
+        setSnackbar(true);
+    };
+
+    useKeyPressEvent('c', copyURL);
+
+    useKeyPressEvent('ArrowLeft', () => {
+        if (!isLoading && (index || page)) {
+            previousImage();
+        }
+    });
+    useKeyPressEvent('ArrowRight', () => {
+        if (!isLoading) {
+            nextImage();
+        }
+    });
     return (
-        <Grid>
-            <div>
-                <FullHeightIconButton
-                    onClick={() => {
-                        if (index === 0) {
-                            setPage(page - 1);
-                            setIndex(9);
-                        } else {
-                            setIndex(index - 1);
-                        }
-                    }}
-                    disabled={isLoading || (!index && !page)}
-                    arial-label="previous image"
+        <>
+            <Grid>
+                <div>
+                    <FullHeightIconButton
+                        onClick={previousImage}
+                        disabled={isLoading || (!index && !page)}
+                        arial-label="previous image"
+                    >
+                        <ArrowLeftIcon />
+                    </FullHeightIconButton>
+                </div>
+                <CenteredImage>
+                    {isLoading ? (
+                        <CircularProgress color="success" />
+                    ) : (
+                        <Image
+                            src={data?.pages[page]?.[index]}
+                            alt="a shiba pic"
+                        />
+                    )}
+                </CenteredImage>
+                <div>
+                    <FullHeightIconButton
+                        onClick={nextImage}
+                        arial-label="next image"
+                        disabled={isLoading}
+                    >
+                        <ArrowRightIcon />
+                    </FullHeightIconButton>
+                </div>
+            </Grid>
+            <Snackbar
+                open={snackbar}
+                autoHideDuration={2000}
+                onClose={() => setSnackbar(false)}
+            >
+                <Alert
+                    onClose={() => setSnackbar(false)}
+                    severity="success"
+                    sx={{ width: '100%' }}
                 >
-                    <ArrowLeftIcon />
-                </FullHeightIconButton>
-            </div>
-            <CenteredImage>
-                {isLoading ? (
-                    <CircularProgress color="success" />
-                ) : (
-                    <Image src={data?.pages[page]?.[index]} alt="a shiba pic" />
-                )}
-            </CenteredImage>
-            <div>
-                <FullHeightIconButton
-                    onClick={() => {
-                        if (index === data?.pages[page]?.length - 1) {
-                            fetchNextPage().then(() => {
-                                setIndex(0);
-                                setPage(page + 1);
-                            });
-                        } else {
-                            setIndex(index + 1);
-                        }
-                    }}
-                    arial-label="next image"
-                    disabled={isLoading}
-                >
-                    <ArrowRightIcon />
-                </FullHeightIconButton>
-            </div>
-        </Grid>
+                    Copied source to clipboard!
+                </Alert>
+            </Snackbar>
+        </>
     );
 }
 
