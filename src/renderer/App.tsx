@@ -4,6 +4,8 @@ import ImageGallery from './ImageGallery';
 import { ThemeProvider } from '@emotion/react';
 import { createTheme, CssBaseline } from '@mui/material';
 import { MemoryRouter as Router, Routes, Route } from 'react-router-dom';
+import Home from './Home';
+import { KeyListener } from './components/KeyListener';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -31,8 +33,10 @@ export default function App() {
             <CssBaseline />
             <QueryClientProvider client={queryClient}>
                 <Router>
+                    <KeyListener />
                     <Routes>
                         <Route path="/" element={<Shiba />} />
+                        <Route path="/home" element={<Home />} />
                     </Routes>
                 </Router>
             </QueryClientProvider>

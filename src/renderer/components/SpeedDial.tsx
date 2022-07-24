@@ -4,15 +4,23 @@ import SpeedDialIcon from '@mui/material/SpeedDialIcon';
 import SpeedDialAction from '@mui/material/SpeedDialAction';
 import FileCopyIcon from '@mui/icons-material/FileCopyOutlined';
 import HomeIcon from '@mui/icons-material/Home';
+import { useNavigate } from 'react-router-dom';
 
 export function SpeedDialTooltipOpen({ onCopy }: { onCopy: () => void }) {
     const [open, setOpen] = React.useState(false);
     const handleOpen = () => setOpen(true);
     const handleClose = () => setOpen(false);
+    const navigate = useNavigate();
 
     const actions = [
         { icon: <FileCopyIcon />, name: 'Copy', onClick: onCopy },
-        { icon: <HomeIcon />, name: 'Main Menu', onClick: () => {} },
+        {
+            icon: <HomeIcon />,
+            name: 'Main Menu',
+            onClick: () => {
+                navigate('/home');
+            },
+        },
     ];
 
     return (

@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { useKeyPressEvent } from 'react-use';
 import { Image, SpeedDial } from './components';
 import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getShibas } from './api';
+import { useKey } from 'rooks';
 
 const FullHeightIconButton = styled(IconButton)({
     height: '100%',
@@ -68,14 +68,14 @@ function ImageGallery() {
         setSnackbar(true);
     };
 
-    useKeyPressEvent('c', copyURL);
+    useKey('c', copyURL);
 
-    useKeyPressEvent('ArrowLeft', () => {
+    useKey('ArrowLeft', () => {
         if (!isLoading && (index || page)) {
             previousImage();
         }
     });
-    useKeyPressEvent('ArrowRight', () => {
+    useKey('ArrowRight', () => {
         if (!isLoading) {
             nextImage();
         }
