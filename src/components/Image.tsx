@@ -1,7 +1,7 @@
 import styled from '@emotion/styled';
 
 const Image = styled.img`
-    max-width: 80vw;
+    max-width: calc(100% - 12rem);
     max-height: 80vh;
 `;
 
