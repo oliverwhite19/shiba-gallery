@@ -1,13 +1,12 @@
 import React, { useState } from 'react';
+import { styled } from '@mui/material/styles';
+import { useKeyPressEvent } from 'react-use';
 import { Image } from './components';
 import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { useInfiniteQuery } from '@tanstack/react-query';
 import { getShibas } from './api';
-
-import { styled } from '@mui/material/styles';
-import { useKeyPressEvent } from 'react-use';
 
 const FullHeightIconButton = styled(IconButton)({
     height: '100%',
@@ -18,7 +17,7 @@ const FullHeightIconButton = styled(IconButton)({
 const Grid = styled('div')({
     display: 'grid',
     gridTemplateColumns: '4rem auto 4rem',
-    columnGap: '2rem',
+    columnGap: '1rem',
     height: '100vh',
 });
 
