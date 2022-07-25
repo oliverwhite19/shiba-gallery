@@ -5,11 +5,10 @@ import MenuItem from '@mui/material/MenuItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Typography from '@mui/material/Typography';
-import ContentCopy from '@mui/icons-material/ContentCopy';
-import ContentPaste from '@mui/icons-material/ContentPaste';
 import PetsIcon from '@mui/icons-material/Pets';
 import { styled } from '@mui/system';
 import { useNavigate } from 'react-router-dom';
+import CurrencyYenIcon from '@mui/icons-material/CurrencyYen';
 
 const CenteredMenu = styled('div')({
     width: '100vw',
@@ -34,22 +33,13 @@ export default function Home() {
                             Ctrl + S
                         </Typography>
                     </MenuItem>
-                    <MenuItem>
+                    <MenuItem onClick={() => navigate('/anime')}>
                         <ListItemIcon>
-                            <ContentCopy fontSize="small" />
+                            <CurrencyYenIcon fontSize="small" />
                         </ListItemIcon>
-                        <ListItemText>Copy</ListItemText>
+                        <ListItemText>Anime</ListItemText>
                         <Typography variant="body2" color="text.secondary">
-                            Ctrl + C
-                        </Typography>
-                    </MenuItem>
-                    <MenuItem>
-                        <ListItemIcon>
-                            <ContentPaste fontSize="small" />
-                        </ListItemIcon>
-                        <ListItemText>Paste</ListItemText>
-                        <Typography variant="body2" color="text.secondary">
-                            Ctrl + V
+                            Ctrl + A
                         </Typography>
                     </MenuItem>
                 </MenuList>

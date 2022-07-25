@@ -1,4 +1,5 @@
 import { Image } from './Image';
 import { SpeedDialTooltipOpen as SpeedDial } from './SpeedDial';
+import { ImageGallery } from './ImageGallery';
 
-export { Image, SpeedDial };
+export { Image, SpeedDial, ImageGallery };

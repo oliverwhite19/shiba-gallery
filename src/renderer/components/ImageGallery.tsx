@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
 import { styled } from '@mui/material/styles';
-import { Image, SpeedDial } from './components';
 import { Alert, CircularProgress, IconButton, Snackbar } from '@mui/material';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
-import { useInfiniteQuery } from '@tanstack/react-query';
-import { getShibas } from './api';
+import {
+    InfiniteData,
+    InfiniteQueryObserverResult,
+} from '@tanstack/react-query';
 import { useKey } from 'rooks';
+import { Image } from './Image';
+import { SpeedDialTooltipOpen as SpeedDial } from './SpeedDial';
 
 const FullHeightIconButton = styled(IconButton)({
     height: '100%',
@@ -29,28 +32,30 @@ const CenteredImage = styled('div')({
     alignItems: 'center',
 });
 
-function ImageGallery() {
+type ImageGalleryProps = {
+    isLoading: boolean;
+    data: InfiniteData<string> | undefined;
+    fetchNextPage: () => Promise<InfiniteQueryObserverResult<any, unknown>>;
+};
+
+const ImageGallery = ({
+    isLoading,
+    data,
+    fetchNextPage,
+}: ImageGalleryProps) => {
     const [index, setIndex] = useState(0);
     const [page, setPage] = useState(0);
     const [snackbar, setSnackbar] = useState(false);
-
-    const { isLoading, data, fetchNextPage } = useInfiniteQuery(
-        ['shibas'],
-        getShibas,
-        {
-            getNextPageParam: () => page + 1,
-        }
-    );
     const previousImage = () => {
         if (index === 0) {
             setPage(page - 1);
-            setIndex(9);
+            setIndex(29);
         } else {
             setIndex(index - 1);
         }
     };
     const nextImage = () => {
-        if (index === data?.pages[page]?.length - 1) {
+        if (data && index === data?.pages[page]?.length - 1) {
             fetchNextPage().then(() => {
                 setIndex(0);
                 setPage(page + 1);
@@ -61,10 +66,7 @@ function ImageGallery() {
     };
 
     const copyURL = () => {
-        /* Copy the text inside the text field */
-        navigator.clipboard.writeText(data?.pages[page]?.[index]);
-
-        /* Alert the copied text */
+        navigator.clipboard.writeText(data ? data?.pages[page]?.[index] : '');
         setSnackbar(true);
     };
 
@@ -97,10 +99,7 @@ function ImageGallery() {
                     {isLoading ? (
                         <CircularProgress color="success" />
                     ) : (
-                        <Image
-                            src={data?.pages[page]?.[index]}
-                            alt="a shiba pic"
-                        />
+                        <Image src={data?.pages[page]?.[index]} />
                     )}
                 </CenteredImage>
                 <div>
@@ -128,6 +127,6 @@ function ImageGallery() {
             </Snackbar>
         </>
     );
-}
+};
 
-export default ImageGallery;
+export { ImageGallery };

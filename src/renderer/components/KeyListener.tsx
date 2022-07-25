@@ -25,6 +25,16 @@ const KeyListener = () => {
             when: true,
         }
     );
+    useKeys(
+        ['ControlLeft', 'KeyA'],
+        () => {
+            navigate('/anime');
+        },
+        {
+            target: containerRef,
+            when: true,
+        }
+    );
     return <></>;
 };
 
